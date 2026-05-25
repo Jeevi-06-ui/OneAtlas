@@ -30,6 +30,46 @@ async function main() {
       },
     });
   }
+
+  const existingQuestion = await prisma.question.findFirst();
+  if (!existingQuestion) {
+    const questionOne = await prisma.question.create({
+      data: {
+        question: "Does the Scale plan include team template sharing?",
+        authorName: "Rina Patel",
+      },
+    });
+
+    await prisma.answer.createMany({
+      data: [
+        {
+          questionId: questionOne.id,
+          answer: "Yes, Scale includes shared template libraries plus audit logs.",
+          authorName: "OneAtlas Team",
+        },
+        {
+          questionId: questionOne.id,
+          answer: "We use it for cross-team templates and it works well.",
+          authorName: "Marco",
+        },
+      ],
+    });
+
+    const questionTwo = await prisma.question.create({
+      data: {
+        question: "How long do preview links stay active?",
+        authorName: "Ava Kim",
+      },
+    });
+
+    await prisma.answer.create({
+      data: {
+        questionId: questionTwo.id,
+        answer: "Previews are immutable snapshots. You can set expiration per preview, otherwise they stay active.",
+        authorName: "OneAtlas Team",
+      },
+    });
+  }
 }
 
 main()

@@ -95,3 +95,24 @@ model PreviewSnapshot {
   @@index([appId, createdAt])
   @@index([expiresAt])
 }
+
+model Question {
+  id         String   @id @default(cuid())
+  question   String
+  authorName String?
+  createdAt  DateTime @default(now())
+  answers    Answer[]
+
+  @@index([createdAt])
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer     String
+  authorName String?
+  createdAt  DateTime @default(now())
+
+  @@index([questionId, createdAt])
+}

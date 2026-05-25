@@ -33,9 +33,6 @@ export function SiteHeader() {
           <Button variant="ghost" size="sm" asChild>
             <Link href="/templates">Templates</Link>
           </Button>
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/#start-building">Login</Link>
-          </Button>
           <Button size="sm" asChild>
             <Link href="/#start-building">Start Building</Link>
           </Button>

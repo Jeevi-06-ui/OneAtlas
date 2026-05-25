@@ -144,6 +144,7 @@ export const navItems: MegaMenuItem[] = [
     items: [
       { label: "Docs", href: "/docs" },
       { label: "Blog", href: "/blog" },
+      { label: "Q&A", href: "/q-and-a" },
       { label: "Support", href: "/support" },
       { label: "Updates", href: "/blog" },
     ],
@@ -176,6 +177,7 @@ export const footerLinks = {
   community: [
     { label: "Docs", href: "/docs" },
     { label: "Blog", href: "/blog" },
+    { label: "Q&A", href: "/q-and-a" },
     { label: "Support", href: "/support" },
   ],
 };
