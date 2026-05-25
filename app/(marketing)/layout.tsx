@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen">
+    <div className="marketing-page min-h-screen">
       <SiteHeader />
       {children}
       <SiteFooter />

@@ -1,0 +1,407 @@
+/* OneAtlas marketing & preview polish — additive only, no logic changes */
+
+@keyframes polish-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes polish-bar-grow {
+  from {
+    transform: scaleY(0.15);
+    transform-origin: bottom;
+  }
+  to {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+@keyframes polish-pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.72;
+  }
+}
+
+@keyframes polish-shimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+/* ── Marketing shell ── */
+.marketing-page > main > section:first-child {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 0%, color-mix(in srgb, #635bff 14%, transparent), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 90% 10%, color-mix(in srgb, #00d4b1 10%, transparent), transparent 50%),
+    var(--background);
+}
+
+.marketing-page > main > section {
+  transition: background-color 0.4s ease;
+}
+
+.marketing-page h1,
+.marketing-page h2 {
+  letter-spacing: -0.02em;
+}
+
+/* Cards site-wide under marketing */
+.marketing-page [data-slot="card"] {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    background-color 0.35s ease;
+}
+
+.marketing-page [data-slot="card"]:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 4px 6px -2px color-mix(in srgb, var(--foreground) 6%, transparent),
+    0 22px 44px -12px color-mix(in srgb, #635bff 22%, transparent);
+}
+
+/* How it works — staggered entrance */
+.marketing-page #how-it-works [data-slot="card"] {
+  animation: polish-fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.marketing-page #how-it-works [data-slot="card"]:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.marketing-page #how-it-works [data-slot="card"]:nth-child(2) {
+  animation-delay: 0.12s;
+}
+.marketing-page #how-it-works [data-slot="card"]:nth-child(3) {
+  animation-delay: 0.19s;
+}
+.marketing-page #how-it-works [data-slot="card"]:nth-child(4) {
+  animation-delay: 0.26s;
+}
+
+.marketing-page #how-it-works [data-slot="card"]:hover [data-slot="card-title"] {
+  color: color-mix(in srgb, #635bff 80%, var(--foreground));
+}
+
+.marketing-page #how-it-works .grid.size-9 {
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.marketing-page #how-it-works [data-slot="card"]:hover .grid.size-9 {
+  transform: scale(1.08) rotate(-3deg);
+  background: linear-gradient(135deg, #635bff, #7a73ff);
+}
+
+/* Model highlights */
+.marketing-page #models .grid > div {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.marketing-page #models .grid > div:hover {
+  transform: translateY(-3px) translateX(2px);
+  border-color: color-mix(in srgb, #059669 35%, var(--border));
+  box-shadow: 0 12px 28px -10px color-mix(in srgb, #059669 25%, transparent);
+  background: color-mix(in srgb, #059669 6%, var(--background));
+}
+
+.marketing-page #models .grid > div:hover svg {
+  transform: scale(1.15);
+  transition: transform 0.3s ease;
+}
+
+/* Template carousel cards */
+.marketing-page #templates [data-slot="card"] {
+  scroll-snap-align: start;
+}
+
+.marketing-page #templates .scrollbar-thin {
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;
+}
+
+.marketing-page #templates [data-slot="card"]:hover {
+  border-color: color-mix(in srgb, #7c3aed 40%, var(--border));
+}
+
+/* Pricing — highlight Scale tier */
+.marketing-page #pricing .mt-10.grid > [data-slot="card"]:nth-child(2) {
+  border: 1px solid color-mix(in srgb, #635bff 45%, var(--border));
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, #635bff 8%, var(--card)),
+    var(--card)
+  );
+  box-shadow: 0 18px 40px -16px color-mix(in srgb, #635bff 35%, transparent);
+}
+
+.marketing-page #pricing .mt-10.grid > [data-slot="card"]:nth-child(2):hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+.marketing-page #pricing .mt-10.grid > [data-slot="card"]:nth-child(2) [data-slot="card-title"]::after {
+  content: "Popular";
+  margin-left: 0.5rem;
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  vertical-align: middle;
+  background: color-mix(in srgb, #635bff 18%, transparent);
+  color: color-mix(in srgb, #635bff 90%, var(--foreground));
+}
+
+/* FAQ */
+.marketing-page #resources [data-slot="card"] {
+  cursor: default;
+}
+
+.marketing-page #resources [data-slot="card"]:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, #0284c7 35%, var(--border));
+}
+
+.marketing-page #resources [data-slot="card"]:hover [data-slot="card-title"] {
+  color: color-mix(in srgb, #0284c7 75%, var(--foreground));
+}
+
+/* CTA strip */
+.marketing-page #community {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, #635bff 8%, var(--background)),
+    color-mix(in srgb, #ff5996 6%, var(--background)),
+    color-mix(in srgb, #00d4b1 8%, var(--background))
+  );
+  transition: background 0.5s ease;
+}
+
+.marketing-page #community:hover {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, #635bff 12%, var(--background)),
+    color-mix(in srgb, #ff5996 10%, var(--background)),
+    color-mix(in srgb, #00d4b1 12%, var(--background))
+  );
+}
+
+.marketing-page #community svg {
+  transition: transform 0.4s ease, color 0.3s ease;
+}
+
+.marketing-page #community:hover svg {
+  transform: rotate(12deg) scale(1.1);
+  color: #7c3aed;
+}
+
+/* Buttons & links in marketing */
+.marketing-page a,
+.marketing-page button {
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.marketing-page a:hover,
+.marketing-page button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.marketing-page a:active,
+.marketing-page button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Section eyebrow labels */
+.marketing-page section > div > p.text-sm.font-medium:first-child,
+.marketing-page section p.text-sm.font-medium.text-sky-700,
+.marketing-page section p.text-sm.font-medium.text-emerald-700,
+.marketing-page section p.text-sm.font-medium.text-violet-700,
+.marketing-page section p.text-sm.font-medium.text-rose-700,
+.marketing-page section p.text-sm.font-medium.text-amber-700 {
+  transition: letter-spacing 0.3s ease;
+}
+
+.marketing-page section:hover > div > p.text-sm.font-medium:first-child {
+  letter-spacing: 0.04em;
+}
+
+/* ── Dashboard preview mockup ── */
+.dashboard-preview-shell {
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease;
+}
+
+.dashboard-preview-shell:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 8px 16px -6px color-mix(in srgb, var(--foreground) 8%, transparent),
+    0 32px 64px -20px color-mix(in srgb, #635bff 28%, transparent);
+}
+
+.preview-connected-badge {
+  animation: polish-pulse-soft 2.8s ease-in-out infinite;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dashboard-preview-shell:hover .preview-connected-badge {
+  background: color-mix(in srgb, #059669 15%, var(--secondary));
+  color: color-mix(in srgb, #059669 90%, var(--secondary-foreground));
+}
+
+.preview-nav-item {
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease,
+    padding-left 0.25s ease;
+}
+
+.preview-nav-item:hover {
+  background: var(--card) !important;
+  color: var(--foreground) !important;
+  transform: translateX(4px);
+  padding-left: 0.75rem !important;
+}
+
+.preview-nav-item-active {
+  box-shadow: inset 3px 0 0 #635bff;
+}
+
+.preview-metric-card {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.preview-metric-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-color: color-mix(in srgb, #635bff 30%, var(--border));
+}
+
+.preview-metric-card:hover .h-1\.5 {
+  transform: scaleX(1.08);
+  transition: transform 0.35s ease;
+}
+
+.preview-chart-panel,
+.preview-mutation-panel {
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.preview-chart-panel:hover,
+.preview-mutation-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -14px color-mix(in srgb, #0284c7 25%, transparent);
+}
+
+.preview-bar-fill {
+  animation: polish-bar-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: filter 0.3s ease;
+}
+
+.preview-chart-panel:hover .preview-bar-fill {
+  filter: brightness(1.08);
+}
+
+.preview-bar-wrap:nth-child(1) .preview-bar-fill {
+  animation-delay: 0.05s;
+}
+.preview-bar-wrap:nth-child(2) .preview-bar-fill {
+  animation-delay: 0.12s;
+}
+.preview-bar-wrap:nth-child(3) .preview-bar-fill {
+  animation-delay: 0.19s;
+}
+.preview-bar-wrap:nth-child(4) .preview-bar-fill {
+  animation-delay: 0.26s;
+}
+.preview-bar-wrap:nth-child(5) .preview-bar-fill {
+  animation-delay: 0.33s;
+}
+.preview-bar-wrap:nth-child(6) .preview-bar-fill {
+  animation-delay: 0.4s;
+}
+.preview-bar-wrap:nth-child(7) .preview-bar-fill {
+  animation-delay: 0.47s;
+}
+
+.preview-mutation-input {
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.preview-mutation-panel:hover .preview-mutation-input {
+  border-color: color-mix(in srgb, #635bff 35%, var(--border));
+  background: color-mix(in srgb, #635bff 4%, var(--muted));
+  box-shadow: 0 0 0 3px color-mix(in srgb, #635bff 12%, transparent);
+}
+
+.preview-status-pill {
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.preview-mutation-panel:hover .preview-status-pill {
+  transform: translateX(4px);
+}
+
+.preview-status-pill:nth-child(2) {
+  transition-delay: 0.05s;
+}
+
+/* Hero badge shimmer */
+.marketing-page > main > section:first-child [data-slot="badge"],
+.marketing-page > main > section:first-child .rounded-full {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.marketing-page > main > section:first-child [data-slot="badge"]:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, #635bff 35%, transparent);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marketing-page [data-slot="card"],
+  .dashboard-preview-shell,
+  .preview-nav-item,
+  .preview-metric-card,
+  .preview-bar-fill {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .marketing-page [data-slot="card"]:hover,
+  .dashboard-preview-shell:hover {
+    transform: none;
+  }
+}
