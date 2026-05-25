@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { BuilderTopbar } from "@/components/builder/builder-topbar";
 import { ComponentTree } from "@/components/builder/component-tree";
 import { ConversationStrip } from "@/components/builder/conversation-strip";
+import { EditHistoryPanel } from "@/components/builder/edit-history-panel";
 import { PropertiesPanel } from "@/components/builder/properties-panel";
 import { StatusBar } from "@/components/builder/status-bar";
 import { RuntimeAppShell } from "@/components/runtime-renderer";
@@ -69,6 +70,7 @@ export function BuilderShell({ appId, initialSchema, currentVersion }: BuilderSh
           </div>
         ) : null}
       </div>
+      <EditHistoryPanel />
       <ConversationStrip />
       <StatusBar />
     </div>

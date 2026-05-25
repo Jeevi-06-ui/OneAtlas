@@ -1,5 +1,4 @@
-import type { RuntimeSchema, RuntimeTone } from "@/types/runtime";
-import type { TemplateCategory, TemplateComplexity, TemplateConfig } from "@/types/template";
+import type { TemplateConfig } from "@/types/template";
 
 const CREATED_AT = "2026-05-25T00:00:00.000Z";
 
@@ -261,6 +260,89 @@ export const templates: TemplateConfig[] = [
         }
       ],
       metadata: { generatedFrom: "Analytics Workspace", ownerRole: "Data Operations", status: "draft", lastEditedAt: CREATED_AT }
+    },
+    parentTemplateId: undefined,
+    createdAt: CREATED_AT
+  },
+  {
+    id: "tpl_admin_panel",
+    name: "Admin Panel",
+    slug: "admin-panel",
+    description: "An internal admin control panel for users, roles, permissions, audit logs, and platform configuration.",
+    category: "Platform",
+    complexity: "Advanced",
+    tags: ["admin", "users", "roles", "permissions", "audit", "settings"],
+    keywords: ["admin", "panel", "user", "role", "permission", "audit", "settings", "access", "control"],
+    schemaDefaults: {
+      id: "admin-panel-schema",
+      appName: "Admin Panel",
+      templateSlug: "admin-panel",
+      version: 1,
+      theme: { mode: "system", accent: "neutral", density: "compact", radius: "sm" },
+      sidebar: {
+        brand: "Admin Panel",
+        groups: [
+          {
+            id: "admin-platform",
+            label: "Platform",
+            items: [
+              { id: "admin-users", label: "Users", icon: "Users" },
+              { id: "admin-roles", label: "Roles", icon: "ShieldCheck" },
+              { id: "admin-perms", label: "Permissions", icon: "Settings2" },
+              { id: "admin-audit", label: "Audit Log", icon: "Activity" },
+              { id: "admin-settings", label: "Settings", icon: "Settings2" }
+            ]
+          }
+        ]
+      },
+      navigation: [
+        { id: "admin-nav-users", label: "Users", href: "#users" },
+        { id: "admin-nav-audit", label: "Audit", href: "#audit" }
+      ],
+      sections: [
+        {
+          id: "admin-control-section",
+          title: "Access Control",
+          description: "User administration and permission health.",
+          layout: "grid",
+          columns: 3,
+          components: [
+            { id: "admin-metric-users", type: "metric", title: "Active Users", value: "1,248", trend: "+6% this month", tone: "neutral", icon: "Users", order: 1, width: "third" },
+            { id: "admin-metric-roles", type: "metric", title: "Roles", value: "18", trend: "2 pending review", tone: "sky", icon: "ShieldCheck", order: 2, width: "third" },
+            { id: "admin-metric-failed", type: "metric", title: "Failed Logins", value: "23", trend: "-12% vs last week", tone: "rose", icon: "AlertTriangle", order: 3, width: "third" },
+            { id: "admin-chart-perms", type: "chart", title: "Permission Changes", description: "Weekly permission updates", chartType: "bar", tone: "neutral", order: 4, width: "half",
+              data: [
+                { label: "Mon", value: 12, comparison: 10 },
+                { label: "Tue", value: 18, comparison: 14 },
+                { label: "Wed", value: 9, comparison: 11 },
+                { label: "Thu", value: 22, comparison: 16 },
+                { label: "Fri", value: 15, comparison: 13 }
+              ]
+            },
+            { id: "admin-activity-audit", type: "activity", title: "Audit Log Feed", description: "Recent privileged actions", order: 5, width: "half",
+              items: [
+                { id: "audit-1", title: "Role updated", detail: "ops-admin granted billing.write", timestamp: "4m ago", tone: "amber" },
+                { id: "audit-2", title: "User invited", detail: "sarah@acme.com added to workspace", timestamp: "22m ago", tone: "emerald" },
+                { id: "audit-3", title: "API key rotated", detail: "production key renewed", timestamp: "1h ago", tone: "sky" }
+              ]
+            },
+            { id: "admin-table-users", type: "table", title: "User Accounts", description: "Workspace members and access levels", primaryAction: "Invite User", order: 6, width: "full",
+              columns: [
+                { key: "email", label: "Email", type: "email", sortable: true },
+                { key: "role", label: "Role", type: "text", sortable: true },
+                { key: "status", label: "Status", type: "status", sortable: true },
+                { key: "lastActive", label: "Last Active", type: "text", sortable: true }
+              ],
+              rows: [
+                { email: "alex@oneatlas.dev", role: "Owner", status: "Active", lastActive: "2m ago" },
+                { email: "sam@acme.com", role: "Admin", status: "Active", lastActive: "1h ago" },
+                { email: "guest@beta.io", role: "Viewer", status: "Suspended", lastActive: "3d ago" }
+              ]
+            }
+          ]
+        }
+      ],
+      metadata: { generatedFrom: "Admin Panel", ownerRole: "Platform Administration", status: "draft", lastEditedAt: CREATED_AT }
     },
     parentTemplateId: undefined,
     createdAt: CREATED_AT
