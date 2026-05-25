@@ -75,6 +75,7 @@ Neon stays “live” — each API request (`/api/generate`, `/api/apps/...`) re
    | --- | --- |
    | `DATABASE_URL` | Your Neon connection string (use the **pooled** host if available) |
    | `NEXT_PUBLIC_APP_URL` | `https://your-app.vercel.app` (set after first deploy, then redeploy) |
+   | `SESSION_SECRET` | Random string, at least 32 characters (e.g. `openssl rand -base64 32`) |
 
 4. **Build command:** `npm run build` (default)
 5. **Install command:** `npm install` (default)
