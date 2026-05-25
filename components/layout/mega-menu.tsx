@@ -63,6 +63,8 @@ export function MegaMenu({ items }: MegaMenuProps) {
                           <Link
                             key={child.label}
                             href={child.href}
+                            target={child.href.startsWith("http") ? "_blank" : undefined}
+                            rel={child.href.startsWith("http") ? "noreferrer" : undefined}
                             className="rounded-md px-2 py-2 transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                           >
                             <span className="text-sm font-medium">{child.label}</span>
@@ -81,6 +83,8 @@ export function MegaMenu({ items }: MegaMenuProps) {
                     <Link
                       key={child.label}
                       href={child.href}
+                      target={child.href.startsWith("http") ? "_blank" : undefined}
+                      rel={child.href.startsWith("http") ? "noreferrer" : undefined}
                       className="rounded-md px-2 py-2 text-sm transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {child.label}

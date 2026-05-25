@@ -1,0 +1,86 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Template {
+  id               String     @id
+  name             String
+  slug             String     @unique
+  description      String
+  category         String
+  complexity       String
+  tags             String[]
+  schemaDefaults   Json
+  parentTemplateId String?
+  parentTemplate   Template?  @relation("TemplateLineage", fields: [parentTemplateId], references: [id], onDelete: SetNull)
+  childTemplates   Template[] @relation("TemplateLineage")
+  createdAt        DateTime   @default(now())
+  apps             App[]
+
+  @@index([category])
+  @@index([complexity])
+  @@index([parentTemplateId])
+}
+
+model App {
+  id             String          @id @default(cuid())
+  name           String
+  prompt         String
+  templateId     String
+  template       Template        @relation(fields: [templateId], references: [id], onDelete: Restrict)
+  currentSchema  Json
+  currentVersion Int             @default(1)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  versions       SchemaVersion[]
+  mutationLogs   MutationLog[]
+  previews       PreviewSnapshot[]
+
+  @@index([templateId])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+model SchemaVersion {
+  id             String   @id @default(cuid())
+  appId          String
+  app            App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+  version        Int
+  schemaSnapshot Json
+  createdAt      DateTime @default(now())
+
+  @@unique([appId, version])
+  @@index([appId, createdAt])
+}
+
+model MutationLog {
+  id              String   @id @default(cuid())
+  appId           String
+  app             App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+  instruction     String
+  mutationType    String
+  mutationPayload Json
+  resultSummary   String
+  createdAt       DateTime @default(now())
+
+  @@index([appId, createdAt])
+  @@index([mutationType])
+}
+
+model PreviewSnapshot {
+  id             String    @id @default(cuid())
+  appId          String
+  app            App       @relation(fields: [appId], references: [id], onDelete: Cascade)
+  token          String    @unique
+  schemaSnapshot Json
+  createdAt      DateTime  @default(now())
+  expiresAt      DateTime?
+
+  @@index([appId, createdAt])
+  @@index([expiresAt])
+}

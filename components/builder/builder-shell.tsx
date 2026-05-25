@@ -10,7 +10,9 @@ import { PropertiesPanel } from "@/components/builder/properties-panel";
 import { StatusBar } from "@/components/builder/status-bar";
 import { RuntimeAppShell } from "@/components/runtime-renderer";
 import { Badge } from "@/components/ui/badge";
+import { useBuilderActions } from "@/hooks/use-builder-actions";
 import { useBuilderStore } from "@/store/builder-store";
+import type { RuntimeRenderActions } from "@/types/runtime-render";
 import type { RuntimeSchema } from "@/types/runtime";
 
 interface BuilderShellProps {
@@ -26,6 +28,15 @@ export function BuilderShell({ appId, initialSchema, currentVersion }: BuilderSh
   const selectComponent = useBuilderStore((state) => state.selectComponent);
   const leftPanelOpen = useBuilderStore((state) => state.leftPanelOpen);
   const rightPanelOpen = useBuilderStore((state) => state.rightPanelOpen);
+  const builderActions = useBuilderActions();
+
+  const renderActions: RuntimeRenderActions = {
+    onTableAction: builderActions.handleTableAction,
+    onCardAction: builderActions.handleCardAction,
+    onFormSubmit: builderActions.handleFormSubmit,
+    onActivityItem: builderActions.handleActivityItem,
+    onNavSelect: builderActions.handleNavSelect,
+  };
 
   useEffect(() => {
     initializeBuilder({ appId, schema: initialSchema, version: currentVersion });
@@ -61,6 +72,7 @@ export function BuilderShell({ appId, initialSchema, currentVersion }: BuilderSh
             selectedId={selectedId}
             onSelect={selectComponent}
             showBuilderChrome
+            renderActions={renderActions}
           />
         </main>
 

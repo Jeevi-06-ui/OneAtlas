@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { RuntimeRenderer } from "@/components/runtime-renderer/runtime-renderer";
 import { RuntimeSidebar } from "@/components/runtime-renderer/runtime-sidebar";
 import { Badge } from "@/components/ui/badge";
 import { getRuntimeAccentClasses } from "@/lib/runtime-theme";
+import { scrollToHash } from "@/lib/widget-actions";
 import { cn } from "@/lib/utils";
 import type { RuntimeSchema } from "@/types/runtime";
+import type { RuntimeRenderActions, RuntimeRenderContext } from "@/types/runtime-render";
 
 interface RuntimeAppShellProps {
   schema: RuntimeSchema;
@@ -15,6 +17,7 @@ interface RuntimeAppShellProps {
   onSelect?: (componentId: string) => void;
   previewMode?: boolean;
   showBuilderChrome?: boolean;
+  renderActions?: RuntimeRenderActions;
 }
 
 export function RuntimeAppShell({
@@ -23,10 +26,39 @@ export function RuntimeAppShell({
   onSelect,
   previewMode,
   showBuilderChrome = false,
+  renderActions,
 }: RuntimeAppShellProps) {
   const accent = getRuntimeAccentClasses(schema.theme.accent);
   const defaultNavId = schema.sidebar.groups[0]?.items[0]?.id ?? schema.navigation[0]?.id ?? null;
   const [activeNavId, setActiveNavId] = useState<string | null>(defaultNavId);
+  const sidebarItems = useMemo(
+    () => schema.sidebar.groups.flatMap((group) => group.items),
+    [schema.sidebar.groups],
+  );
+
+  const focusSectionForNav = useCallback(
+    (navId: string, href?: string) => {
+      setActiveNavId(navId);
+      if (href && scrollToHash(href)) {
+        renderActions?.onNavSelect?.(href);
+        return;
+      }
+      const itemIndex = sidebarItems.findIndex((item) => item.id === navId);
+      const section = schema.sections[itemIndex] ?? schema.sections[0];
+      if (section) {
+        document.getElementById(section.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      renderActions?.onNavSelect?.(href);
+    },
+    [renderActions, schema.sections, sidebarItems],
+  );
+
+  const renderContext: RuntimeRenderContext = {
+    selectedId,
+    onSelect,
+    actions: renderActions,
+    interactive: !previewMode && Boolean(renderActions),
+  };
 
   const componentCount = useMemo(
     () => schema.sections.reduce((total, section) => total + section.components.length, 0),
@@ -59,9 +91,7 @@ export function RuntimeAppShell({
           </Badge>
           <Badge variant="outline">{schema.sections.length} sections</Badge>
           <Badge variant="outline">{componentCount} widgets</Badge>
-          {showBuilderChrome ? (
-            <Badge variant="outline">{schema.metadata.status}</Badge>
-          ) : null}
+          {showBuilderChrome ? <Badge variant="outline">{schema.metadata.status}</Badge> : null}
         </div>
       </header>
 
@@ -73,7 +103,7 @@ export function RuntimeAppShell({
               <button
                 key={item.id}
                 type="button"
-                onClick={() => setActiveNavId(item.id)}
+                onClick={() => focusSectionForNav(item.id, item.href)}
                 className={cn(
                   "rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:text-foreground",
                   isActive && accent.navActive,
@@ -90,11 +120,17 @@ export function RuntimeAppShell({
         <RuntimeSidebar
           schema={schema}
           activeNavId={activeNavId}
-          onNavSelect={setActiveNavId}
+          onNavSelect={(itemId) => focusSectionForNav(itemId)}
           className="hidden lg:flex"
         />
         <main className="bg-background p-4 sm:p-6">
-          <RuntimeRenderer schema={schema} selectedId={selectedId} onSelect={onSelect} previewMode={previewMode} />
+          <RuntimeRenderer
+            schema={schema}
+            selectedId={selectedId}
+            onSelect={onSelect}
+            previewMode={previewMode}
+            renderContext={renderContext}
+          />
         </main>
       </div>
     </div>

@@ -90,6 +90,7 @@ Live schema edits never affect existing preview links because snapshots store co
 | --- | --- | --- |
 | `/api/generate` | `POST` | Validate prompt, match template, create app, create initial version |
 | `/api/apps/[id]/edit` | `POST` | Parse instruction, mutate schema, version snapshot, log mutation |
+| `/api/apps/[id]` | `PATCH` | Update app display name |
 | `/api/apps/[id]/history` | `GET` | Return mutation history |
 | `/api/apps/[id]/save` | `POST` | Persist manual property edits from the builder |
 | `/api/apps/[id]/undo` | `POST` | Restore previous schema snapshot |
@@ -128,11 +129,14 @@ curl -X POST http://localhost:3000/api/generate `
 
 ## Deployment
 
-1. Create a Neon PostgreSQL database.
-2. Add `DATABASE_URL` and `NEXT_PUBLIC_APP_URL` to Vercel.
-3. Run `npm run db:migrate` during deployment or from a trusted CI step.
-4. Run `npm run db:seed` once for initial templates.
-5. Deploy the Next.js app to Vercel.
+Full step-by-step instructions: **[DEPLOYMENT.md](./DEPLOYMENT.md)** (GitHub, Neon, Vercel, Render).
+
+Quick summary:
+
+1. Push repo to GitHub (never commit `.env`).
+2. Set `DATABASE_URL` (Neon) and `NEXT_PUBLIC_APP_URL` on Vercel or Render.
+3. Run `npm run db:migrate` and `npm run db:seed` against production Neon once.
+4. Deploy with `npm run build` / `npm run start`.
 
 ## Quality Checks
 
